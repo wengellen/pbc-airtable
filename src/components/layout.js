@@ -7,30 +7,42 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-
 import Header from "./header"
+import { Global, css } from "@emotion/core"
 import "./layout.css"
+import useStaticMetadata from "../hooks/use-sitemetadata"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
+  const { title } = useStaticMetadata()
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Global
+        styles={css`
+          * {
+            box-sizing: border-box;
+            margin: 0;
+          }
+
+          * + * {
+            margin-top: 1rem;
+          }
+
+          html,
+          body {
+            margin: 0;
+            color: #555;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            ,font-size: 18px;
+            line-height: 1.4;
+          }
+        `}
+      />
+      <Header siteTitle={title} />
       <div
         style={{
           margin: `0 auto`,
           maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
+          padding: `0 1.0875rem 1.45rem`
         }}
       >
         <main>{children}</main>
@@ -45,7 +57,7 @@ const Layout = ({ children }) => {
 }
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export default Layout
